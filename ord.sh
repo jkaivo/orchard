@@ -9,7 +9,7 @@ done
 
 shift $((OPTIND - 1))
 
-if [ $# -ne 1 ] || [ ${#1} -ne 1 ]; then
+if [ $# -eq 0 ]; then
 	printf 'usage: %s [-d|-x|-o] char\n' "$0"
 	printf '\t-d print number in decimal (default)\n'
 	printf '\t-x print number in hexadecimal\n'
@@ -17,4 +17,13 @@ if [ $# -ne 1 ] || [ ${#1} -ne 1 ]; then
 	exit 1
 fi
 
-printf "%${format}\n" "\"$1\""
+string="$@"
+while [ ${#string} -gt 0 ]; do
+	printf "%${format}" "\"${string}\""
+	string=${string#?}
+	if [ ${#string} -gt 0 ]; then
+		printf ' '
+	else
+		printf '\n'
+	fi
+done
